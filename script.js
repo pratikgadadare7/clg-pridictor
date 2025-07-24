@@ -31,17 +31,17 @@ async function processPDF() {
         const branchName = branchMatch[1].trim();
         if (!branchName.toLowerCase().includes(departmentInput)) return;
 
-        // ✅ Extract college name using pattern ending before "("
+        // ✅ Extract college name (after 4-digit code and up to 'College' or 'Institute')
         let collegeName = "(Unknown College)";
-        const collegeLineMatch = sec.match(/\d{4,}\s+([A-Za-z].*?College.*?)\s*\(/);
-        if (collegeLineMatch) {
-          collegeName = collegeLineMatch[1].trim();
+        const nameMatch = sec.match(/\b\d{4,}\s+([A-Z][A-Za-z\s&,-]+?(College|Institute)[^\n]*)/);
+        if (nameMatch) {
+          collegeName = nameMatch[1].trim();
         }
 
-        // ✅ Extract cutoff categories (e.g. GOPEN, GSEBC...)
+        // ✅ Extract cutoff category codes
         const cats = [...sec.matchAll(/([A-Z]{4,})/g)].map(m => m[1]);
 
-        // ✅ Extract cutoff percentages like (82.54%)
+        // ✅ Extract cutoff percentages
         const cuts = [...sec.matchAll(/\(([\d.]+)%\)/g)].map(m => parseFloat(m[1]));
 
         // ✅ Match category + cutoff
