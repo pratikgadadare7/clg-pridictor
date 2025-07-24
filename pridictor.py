@@ -4,7 +4,7 @@ import pandas as pd
 import re
 
 st.set_page_config(page_title="College Predictor", layout="centered")
-st.title("🎓 Maharashtra DSE/FE College Predictor")
+st.title("🎓 Maharashtra DSE/FE College Predictor By Pratik Gadadare")
 
 st.markdown("""
 Upload last year's **CAP PDF**, ente r your **category**, **percentage/rank**, and **desired department** to find suitable colleges.
