@@ -25,24 +25,23 @@ async function processPDF() {
       const sections = text.split("Choice Code");
 
       sections.forEach(sec => {
-        // ✅ Extract branch name
+        // ✅ Extract college name from pattern: "1234 College Name Choice Code"
+        const collegeMatch = sec.match(/\d{4,}\s+([A-Za-z].*?)\s*Choice Code/);
+        const collegeName = collegeMatch ? collegeMatch[1].trim() : "(Unknown College)";
+
+        // ✅ Extract branch name from: "Course Name : Computer Engineering"
         const branchMatch = sec.match(/Course Name\s*:\s*([A-Za-z0-9 &]+)/);
         if (!branchMatch) return;
-
         const branchName = branchMatch[1].trim();
         if (!branchName.toLowerCase().includes(departmentInput)) return;
 
-        // ✅ Extract college name from line with code and college name
-        const collegeLine = sec.match(/\d{4,}\s+([A-Za-z].+?)\s+Course Name/);
-        const collegeName = collegeLine ? collegeLine[1].trim() : "(Unknown College)";
-
-        // ✅ Extract cutoff categories (e.g. GOPEN, GSEBC...)
+        // ✅ Extract cutoff category labels (e.g. GOPEN, GSEBC...)
         const cats = [...sec.matchAll(/([A-Z]{4,})/g)].map(m => m[1]);
 
-        // ✅ Extract cutoff percentages (e.g. (82.54%))
+        // ✅ Extract cutoff percentages like (82.54%)
         const cuts = [...sec.matchAll(/\(([\d.]+)%\)/g)].map(m => parseFloat(m[1]));
 
-        // Match category and cutoff by position
+        // ✅ Match category + cutoff by position
         cats.forEach((cat, idx) => {
           if (cat === categoryInput && percentage >= (cuts[idx] || 0)) {
             matches.push({
@@ -61,6 +60,7 @@ async function processPDF() {
       return;
     }
 
+    // ✅ Render result table
     let html = "<table><tr><th>College</th><th>Branch</th><th>Category</th><th>Cutoff %</th></tr>";
     matches.forEach(m => {
       html += `<tr><td>${m.college}</td><td>${m.branch}</td><td>${m.category}</td><td>${m.cutoff}</td></tr>`;
