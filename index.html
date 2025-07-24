@@ -1,40 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>College Predictor</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        input, label { display: block; margin-bottom: 10px; width: 300px; }
-        h3 { margin-top: 30px; }
-    </style>
+  <title>College Predictor</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>🎓 College Predictor Tool</h1>
-    <form method="POST" action="/predict" enctype="multipart/form-data">
-        <label>Category:</label>
-        <input type="text" name="category" required>
+  <h1>🎓 College Predictor (Static GitHub Version)</h1>
 
-        <label>Percentage/Rank:</label>
-        <input type="number" name="percent" step="0.01" required>
+  <label>Category:</label><br>
+  <input type="text" id="category"><br>
 
-        <label>Preferred Department (e.g., Computer, IT):</label>
-        <input type="text" name="department" required>
+  <label>Percentage or Rank:</label><br>
+  <input type="number" id="percent"><br>
 
-        <label>Upload CAP PDF (optional):</label>
-        <input type="file" name="pdf" accept=".pdf">
+  <label>Department:</label><br>
+  <input type="text" id="department"><br><br>
 
-        <h3>📝 Manually Add College Data (Max 10 rows)</h3>
-        {% for i in range(1, 11) %}
-            <b>College {{ i }}</b><br>
-            <input type="text" name="name_{{ i }}" placeholder="Institute Name">
-            <input type="text" name="branch_{{ i }}" placeholder="Branch">
-            <input type="text" name="code_{{ i }}" placeholder="CAP Code">
-            <input type="text" name="cat_{{ i }}" placeholder="Category">
-            <input type="text" name="cutoff_{{ i }}" placeholder="Last Year Cutoff %">
-        {% endfor %}
+  <button onclick="predict()">🔍 Predict</button>
 
-        <br>
-        <input type="submit" value="🔍 Predict Eligible Colleges">
-    </form>
+  <h2>Eligible Colleges</h2>
+  <div id="results"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
