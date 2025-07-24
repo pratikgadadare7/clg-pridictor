@@ -12,7 +12,7 @@ async function processPDF() {
   resultsDiv.innerHTML = "<p>⏳ Reading PDF...</p>";
 
   const reader = new FileReader();
-  reader.onload = async function() {
+  reader.onload = async function () {
     const typedarray = new Uint8Array(this.result);
     const pdf = await pdfjsLib.getDocument({ data: typedarray }).promise;
 
@@ -25,21 +25,24 @@ async function processPDF() {
       const sections = text.split("Choice Code");
 
       sections.forEach(sec => {
-        // Extract college name & branch
-        const header = sec.match(/(\d+)\s+(.+?)\s+Course Name\s*:\s*([A-Za-z0-9 &]+)/);
-        if (!header) return;
+        // ✅ Extract branch name
+        const branchMatch = sec.match(/Course Name\s*:\s*([A-Za-z0-9 &]+)/);
+        if (!branchMatch) return;
 
-        const collegeName = header[2].trim();
-        const branchName = header[3].trim();
+        const branchName = branchMatch[1].trim();
         if (!branchName.toLowerCase().includes(departmentInput)) return;
 
-        // Extract all cutoffs in this block
-        // pattern: e.g. 2779 (89.37%)
-        const cutoffLines = sec.matchAll(/(\d+)\s*\(\s*([\d.]+)%\s*\)/g);
-        const cats = [...sec.matchAll(/([A-Z]{2,5})(?=\s)/g)].map(m => m[1]);
-        const cuts = [...cutoffLines].map(m => parseFloat(m[2]));
+        // ✅ Extract college name from line with code and college name
+        const collegeLine = sec.match(/\d{4,}\s+([A-Za-z].+?)\s+Course Name/);
+        const collegeName = collegeLine ? collegeLine[1].trim() : "(Unknown College)";
 
-        // Map by position: cats[0] → cuts[0], cats[1] → cuts[1]
+        // ✅ Extract cutoff categories (e.g. GOPEN, GSEBC...)
+        const cats = [...sec.matchAll(/([A-Z]{4,})/g)].map(m => m[1]);
+
+        // ✅ Extract cutoff percentages (e.g. (82.54%))
+        const cuts = [...sec.matchAll(/\(([\d.]+)%\)/g)].map(m => parseFloat(m[1]));
+
+        // Match category and cutoff by position
         cats.forEach((cat, idx) => {
           if (cat === categoryInput && percentage >= (cuts[idx] || 0)) {
             matches.push({
