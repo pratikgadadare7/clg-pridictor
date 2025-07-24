@@ -2,7 +2,7 @@ body {
   font-family: Arial, sans-serif;
   padding: 20px;
 }
-input, label {
+input, label, button {
   display: block;
   margin-bottom: 10px;
   width: 300px;
@@ -17,6 +17,6 @@ th, td {
   border: 1px solid #ccc;
 }
 button {
+  width: auto;
   padding: 8px 15px;
-  margin-top: 10px;
 }
