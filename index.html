@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>College Predictor</title>
+  <meta charset="UTF-8">
+  <title>College Predictor (GitHub Pages)</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🎓 College Predictor (Static GitHub Version)</h1>
+  <h1>✨ College Predictor (PDF Search)</h1>
 
-  <label>Category:</label><br>
-  <input type="text" id="category"><br>
+  <label>Category:</label>
+  <input type="text" id="category" placeholder="e.g. GSEBC">
 
-  <label>Percentage or Rank:</label><br>
-  <input type="number" id="percent"><br>
+  <label>Percentage or Rank:</label>
+  <input type="number" id="percent" step="0.01">
 
-  <label>Department:</label><br>
-  <input type="text" id="department"><br><br>
+  <label>Department:</label>
+  <input type="text" id="department" placeholder="e.g. Computer">
 
-  <button onclick="predict()">🔍 Predict</button>
+  <label>Upload CAP Cutoff PDF:</label>
+  <input type="file" id="pdfFile" accept="application/pdf">
 
-  <h2>Eligible Colleges</h2>
+  <button onclick="processPDF()">🔍 Predict Colleges</button>
+
+  <h2>Matching Colleges</h2>
   <div id="results"></div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
