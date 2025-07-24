@@ -23,7 +23,7 @@ async function processPDF() {
       const page = await pdf.getPage(i + 1);
       const content = await page.getTextContent();
       const text = content.items.map(i => i.str).join(" ");
-      const lines = text.split(/\n| {3,}/); // handle badly formatted PDFs
+      const lines = text.split(/\\n| {3,}/);
 
       for (const line of lines) {
         if (line.toUpperCase().includes(category) && line.toLowerCase().includes(department)) {
@@ -40,7 +40,7 @@ async function processPDF() {
                   cutoff: cutoff
                 });
               }
-            } catch (e) {}
+            } catch {}
           }
         }
       }
